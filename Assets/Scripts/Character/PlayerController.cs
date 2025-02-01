@@ -2,36 +2,41 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class CharacterController : MonoBehaviour
+    public sealed class PlayerController : MonoBehaviour
     {
         [SerializeField] private GameObject character; 
         [SerializeField] private GameManager gameManager;
         [SerializeField] private BulletSystem _bulletSystem;
         [SerializeField] private BulletConfig _bulletConfig;
         
-        public bool _fireRequired;
+        public bool fireRequired;
 
         private void OnEnable()
         {
             this.character.GetComponent<HitPointsComponent>().hpEmpty += this.OnCharacterDeath;
+            InputManager.OnFireInput += HandleFireInput;
         }
 
         private void OnDisable()
         {
             this.character.GetComponent<HitPointsComponent>().hpEmpty -= this.OnCharacterDeath;
+            InputManager.OnFireInput -= HandleFireInput;
         }
 
         private void OnCharacterDeath(GameObject _) => this.gameManager.FinishGame();
 
         private void FixedUpdate()
         {
-            if (this._fireRequired)
+            if (this.fireRequired)
             {
                 this.OnFlyBullet();
-                this._fireRequired = false;
+                this.fireRequired = false;
             }
         }
-
+        private void HandleFireInput()
+        {
+            fireRequired = true;
+        }
         private void OnFlyBullet()
         {
             var weapon = this.character.GetComponent<WeaponComponent>();
