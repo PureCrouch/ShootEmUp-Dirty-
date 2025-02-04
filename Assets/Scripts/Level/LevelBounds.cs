@@ -15,7 +15,6 @@ namespace ShootEmUp
 
         [SerializeField]
         private Transform topBorder;
-        
         public bool InBounds(Vector3 position)
         {
             var positionX = position.x;
@@ -24,6 +23,16 @@ namespace ShootEmUp
                    && positionX < this.rightBorder.position.x
                    && positionY > this.downBorder.position.y
                    && positionY < this.topBorder.position.y;
+        }
+        public bool PlayerInLeftBounds(Vector3 position)
+        {
+            var positionX = position.x;
+            return positionX < this.leftBorder.position.x;
+        }
+        public bool PlayerInRightBounds(Vector3 position)
+        {
+            var positionX = position.x;
+            return positionX > this.leftBorder.position.x;
         }
     }
 }

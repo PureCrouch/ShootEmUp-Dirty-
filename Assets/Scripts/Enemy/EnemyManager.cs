@@ -44,7 +44,7 @@ namespace ShootEmUp
 
         private void OnFire(GameObject enemy, Vector2 position, Vector2 direction)
         {
-            _bulletSystem.FlyBulletByArgs(new BulletSystem.Args
+            _bulletSystem.FlyBulletByArgs(new BulletArgs
             {
                 isPlayer = false,
                 physicsLayer = (int) PhysicsLayer.ENEMY,

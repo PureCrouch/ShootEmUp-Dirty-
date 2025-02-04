@@ -31,6 +31,11 @@ namespace ShootEmUp
             this.m_cache.Clear();
             this.m_cache.AddRange(this.m_activeBullets);
 
+            CheckBulletsInBounds();
+        }
+
+        private void CheckBulletsInBounds()
+        {
             for (int i = 0, count = this.m_cache.Count; i < count; i++)
             {
                 var bullet = this.m_cache[i];
@@ -41,7 +46,7 @@ namespace ShootEmUp
             }
         }
 
-        public void FlyBulletByArgs(Args args)
+        public void FlyBulletByArgs(BulletArgs args)
         {
             if (this.m_bulletPool.TryDequeue(out var bullet))
             {
@@ -51,13 +56,8 @@ namespace ShootEmUp
             {
                 bullet = Instantiate(this.prefab, this.worldTransform);
             }
-
-            bullet.SetPosition(args.position);
-            bullet.SetColor(args.color);
-            bullet.SetPhysicsLayer(args.physicsLayer);
-            bullet.damage = args.damage;
-            bullet.isPlayer = args.isPlayer;
-            bullet.SetVelocity(args.velocity);
+            
+            bullet.SetBulletArgs(args);
             
             if (this.m_activeBullets.Add(bullet))
             {
@@ -81,14 +81,5 @@ namespace ShootEmUp
             }
         }
         
-        public struct Args
-        {
-            public Vector2 position;
-            public Vector2 velocity;
-            public Color color;
-            public int physicsLayer;
-            public int damage;
-            public bool isPlayer;
-        }
     }
 }

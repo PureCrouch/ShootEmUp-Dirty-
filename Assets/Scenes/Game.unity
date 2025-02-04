@@ -764,8 +764,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 4414282821800802397}
   gameManager: {fileID: 3951702117947426123}
-  _bulletSystem: {fileID: 363245577}
-  _bulletConfig: {fileID: 11400000, guid: 7138ae5d32d814e0ca50c616c65ea105, type: 2}
+  bulletSystem: {fileID: 363245577}
+  bulletConfig: {fileID: 11400000, guid: 7138ae5d32d814e0ca50c616c65ea105, type: 2}
+  levelBounds: {fileID: 2572952653776768186}
   fireRequired: 0
 --- !u!1 &61006797492197339
 GameObject:
