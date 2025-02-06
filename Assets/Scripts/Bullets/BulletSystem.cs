@@ -9,8 +9,9 @@ namespace ShootEmUp
         private int initialCount = 50;
         
         [SerializeField] private Transform container;
-        [SerializeField] private Bullet prefab;
         [SerializeField] private Transform worldTransform;
+
+        [SerializeField] private Bullet prefab;
         [SerializeField] private LevelBounds levelBounds;
 
         private readonly Queue<Bullet> m_bulletPool = new();

@@ -22,20 +22,20 @@ namespace ShootEmUp
         [SerializeField]
         private GameObject prefab;
 
-        private readonly Queue<GameObject> enemyPool = new();
+        private readonly Queue<GameObject> _enemyPool = new();
         
         private void Awake()
         {
             for (var i = 0; i < 7; i++)
             {
                 var enemy = Instantiate(this.prefab, this.container);
-                this.enemyPool.Enqueue(enemy);
+                this._enemyPool.Enqueue(enemy);
             }
         }
 
         public GameObject SpawnEnemy()
         {
-            if (!this.enemyPool.TryDequeue(out var enemy))
+            if (!this._enemyPool.TryDequeue(out var enemy))
             {
                 return null;
             }
@@ -55,7 +55,7 @@ namespace ShootEmUp
         public void UnspawnEnemy(GameObject enemy)
         {
             enemy.transform.SetParent(this.container);
-            this.enemyPool.Enqueue(enemy);
+            this._enemyPool.Enqueue(enemy);
         }
     }
 }

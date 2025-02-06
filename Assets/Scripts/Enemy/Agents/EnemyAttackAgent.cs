@@ -12,43 +12,55 @@ namespace ShootEmUp
         [SerializeField] private EnemyMoveAgent moveAgent;
         [SerializeField] private float countdown;
 
-        private GameObject target;
-        private float currentTime;
+        private GameObject _target;
+        private float _currentTime;
 
         public void SetTarget(GameObject target)
         {
-            this.target = target;
+            this._target = target;
         }
 
         public void Reset()
         {
-            this.currentTime = this.countdown;
+            this._currentTime = this.countdown;
         }
 
         private void FixedUpdate()
+        {
+            CheckEnemyMovement();
+            CheckPlayerHitpointsExist();
+            CheckEnemyFireReload();
+        }
+
+        private void CheckEnemyMovement()
         {
             if (!this.moveAgent.IsReached)
             {
                 return;
             }
-            
-            if (!this.target.GetComponent<HitPointsComponent>().IsHitPointsExists())
+        }
+
+        private void CheckPlayerHitpointsExist()
+        {
+            if (!this._target.GetComponent<HitPointsComponent>().IsHitPointsExists())
             {
                 return;
             }
-
-            this.currentTime -= Time.fixedDeltaTime;
-            if (this.currentTime <= 0)
-            {
-                this.Fire();
-                this.currentTime += this.countdown;
-            }
         }
 
+        private void CheckEnemyFireReload()
+        {
+            this._currentTime -= Time.fixedDeltaTime;
+            if (this._currentTime <= 0)
+            {
+                this.Fire();
+                this._currentTime += this.countdown;
+            }
+        }
         private void Fire()
         {
             var startPosition = this.weaponComponent.Position;
-            var vector = (Vector2) this.target.transform.position - startPosition;
+            var vector = (Vector2) this._target.transform.position - startPosition;
             var direction = vector.normalized;
             this.OnFire?.Invoke(this.gameObject, startPosition, direction);
         }

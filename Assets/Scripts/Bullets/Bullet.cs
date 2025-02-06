@@ -8,13 +8,12 @@ namespace ShootEmUp
         public event Action<Bullet, Collision2D> OnCollisionEntered;
 
         [NonSerialized] public bool isPlayer;
+
         [NonSerialized] public int damage;
 
-        [SerializeField]
-        private new Rigidbody2D rigidbody2D;
+        [SerializeField] private new Rigidbody2D rigidbody2D;
 
-        [SerializeField]
-        private SpriteRenderer spriteRenderer;
+        [SerializeField] private SpriteRenderer spriteRenderer;
 
         public void SetBulletArgs(BulletArgs bulletArgs)
         {

@@ -24,15 +24,5 @@ namespace ShootEmUp
                    && positionY > this.downBorder.position.y
                    && positionY < this.topBorder.position.y;
         }
-        public bool PlayerInLeftBounds(Vector3 position)
-        {
-            var positionX = position.x;
-            return positionX < this.leftBorder.position.x;
-        }
-        public bool PlayerInRightBounds(Vector3 position)
-        {
-            var positionX = position.x;
-            return positionX > this.leftBorder.position.x;
-        }
     }
 }

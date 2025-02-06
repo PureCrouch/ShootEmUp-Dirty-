@@ -40,7 +40,7 @@ namespace ShootEmUp
         private void HandleMovePlayer(float horizontalDirection)
         {
             var movement = new Vector2(horizontalDirection, 0);
-            character.GetComponent<MoveComponent>().MoveByRigidbodyVelocity(-movement * Time.fixedDeltaTime);
+            character.GetComponent<MoveComponent>().MoveByRigidbodyVelocity(movement * Time.fixedDeltaTime);
         }
         private void HandleFireInput()
         {
