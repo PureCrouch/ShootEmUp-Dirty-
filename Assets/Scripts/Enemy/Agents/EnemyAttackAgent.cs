@@ -9,7 +9,9 @@ namespace ShootEmUp
         public event FireHandler OnFire;
 
         [SerializeField] private WeaponComponent weaponComponent;
+
         [SerializeField] private EnemyMoveAgent moveAgent;
+
         [SerializeField] private float countdown;
 
         private GameObject _target;
@@ -53,11 +55,11 @@ namespace ShootEmUp
             this._currentTime -= Time.fixedDeltaTime;
             if (this._currentTime <= 0)
             {
-                this.Fire();
+                this.SetFireOptions();
                 this._currentTime += this.countdown;
             }
         }
-        private void Fire()
+        private void SetFireOptions()
         {
             var startPosition = this.weaponComponent.Position;
             var vector = (Vector2) this._target.transform.position - startPosition;

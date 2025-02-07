@@ -24,6 +24,7 @@ namespace ShootEmUp
             damage = bulletArgs.damage;
             isPlayer = bulletArgs.isPlayer;
         }
+        
 
         private void OnCollisionEnter2D(Collision2D collision)
         {

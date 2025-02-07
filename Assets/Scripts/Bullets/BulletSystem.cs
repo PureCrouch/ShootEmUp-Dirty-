@@ -20,13 +20,17 @@ namespace ShootEmUp
         
         private void Awake()
         {
+            InstantiateBullet();
+        }
+
+        private void InstantiateBullet()
+        {
             for (var i = 0; i < this.initialCount; i++)
             {
                 var bullet = Instantiate(this.prefab, this.container);
                 this.m_bulletPool.Enqueue(bullet);
             }
         }
-        
         private void FixedUpdate()
         {
             this.m_cache.Clear();

@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyManager : MonoBehaviour
+    public sealed class EnemyManager : MonoBehaviour, IFireable
     {
-        [SerializeField]
-        private EnemyPool _enemyPool;
+        [SerializeField] private BulletConfig bulletConfig;
 
-        [SerializeField]
-        private BulletSystem _bulletSystem;
+        [SerializeField] private EnemyPool enemyPool;
+
+        [SerializeField] private BulletSystem bulletSystem;
         
         private readonly HashSet<GameObject> m_activeEnemies = new();
 
@@ -19,18 +19,22 @@ namespace ShootEmUp
             while (true)
             {
                 yield return new WaitForSeconds(1);
-                var enemy = this._enemyPool.SpawnEnemy();
-                if (enemy != null)
-                {
-                    if (this.m_activeEnemies.Add(enemy))
-                    {
-                        enemy.GetComponent<HitPointsComponent>().hpEmpty += this.OnDestroyed;
-                        enemy.GetComponent<EnemyAttackAgent>().OnFire += this.OnFire;
-                    }    
-                }
+                OnSpawn();
             }
         }
 
+        private void OnSpawn()
+        {
+            var enemy = this.enemyPool.SpawnEnemy();
+            if (enemy != null)
+            {
+                if (this.m_activeEnemies.Add(enemy))
+                {
+                    enemy.GetComponent<HitPointsComponent>().hpEmpty += this.OnDestroyed;
+                    enemy.GetComponent<EnemyAttackAgent>().OnFire += this.OnFire;
+                }
+            }
+        }
         private void OnDestroyed(GameObject enemy)
         {
             if (m_activeEnemies.Remove(enemy))
@@ -38,20 +42,25 @@ namespace ShootEmUp
                 enemy.GetComponent<HitPointsComponent>().hpEmpty -= this.OnDestroyed;
                 enemy.GetComponent<EnemyAttackAgent>().OnFire -= this.OnFire;
 
-                _enemyPool.UnspawnEnemy(enemy);
+                enemyPool.UnspawnEnemy(enemy);
             }
         }
 
         private void OnFire(GameObject enemy, Vector2 position, Vector2 direction)
         {
-            _bulletSystem.FlyBulletByArgs(new BulletArgs
+            Fire(position, direction, bulletConfig);
+        }
+
+        public void Fire(Vector2 position, Vector2 direction, BulletConfig bulletConfig)
+        {
+            bulletSystem.FlyBulletByArgs(new BulletArgs
             {
                 isPlayer = false,
-                physicsLayer = (int) PhysicsLayer.ENEMY_BULLET,
-                color = Color.red,
-                damage = 1,
+                physicsLayer = (int)bulletConfig.physicsLayer,
+                color = bulletConfig.color,
+                damage = bulletConfig.damage,
                 position = position,
-                velocity = direction * 2.0f
+                velocity = direction * bulletConfig.speed
             });
         }
     }

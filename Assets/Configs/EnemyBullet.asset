@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: EnemyBullet
   m_EditorClassIdentifier: 
   physicsLayer: 13
-  color: {r: 0, g: 1, b: 0.0054223537, a: 1}
+  color: {r: 1, g: 0.17592013, b: 0, a: 1}
   damage: 1
   speed: 1

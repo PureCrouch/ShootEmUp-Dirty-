@@ -6,21 +6,36 @@ namespace ShootEmUp
     public sealed class LevelBackground : MonoBehaviour
     {
         private float startPositionY;
-
         private float endPositionY;
-
         private float movingSpeedY;
-
         private float positionX;
-
         private float positionZ;
 
         private Transform myTransform;
 
-        [SerializeField]
-        private Params m_params;
+        [SerializeField] private Params m_params;
 
         private void Awake()
+        {
+            SetBackgroundParams();
+        }
+
+        private void FixedUpdate()
+        {
+            MoveBackground();
+        }
+
+        [Serializable]
+        public sealed class Params
+        {
+            [SerializeField] public float m_startPositionY;
+
+            [SerializeField] public float m_endPositionY;
+
+            [SerializeField] public float m_movingSpeedY;
+        }
+
+        private void SetBackgroundParams()
         {
             this.startPositionY = this.m_params.m_startPositionY;
             this.endPositionY = this.m_params.m_endPositionY;
@@ -31,7 +46,7 @@ namespace ShootEmUp
             this.positionZ = position.z;
         }
 
-        private void FixedUpdate()
+        private void MoveBackground()
         {
             if (this.myTransform.position.y <= this.endPositionY)
             {
@@ -42,24 +57,11 @@ namespace ShootEmUp
                 );
             }
 
-            this.myTransform.position -= new Vector3(
+                this.myTransform.position -= new Vector3(
                 this.positionX,
                 this.movingSpeedY * Time.fixedDeltaTime,
                 this.positionZ
             );
-        }
-
-        [Serializable]
-        public sealed class Params
-        {
-            [SerializeField]
-            public float m_startPositionY;
-
-            [SerializeField]
-            public float m_endPositionY;
-
-            [SerializeField]
-            public float m_movingSpeedY;
         }
     }
 }

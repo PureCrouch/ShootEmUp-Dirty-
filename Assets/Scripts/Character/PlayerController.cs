@@ -2,12 +2,14 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class PlayerController : MonoBehaviour
+    public sealed class PlayerController : MonoBehaviour, IFireable
     {
         [SerializeField] private GameObject character; 
         [SerializeField] private GameManager gameManager;
-        [SerializeField] private BulletSystem bulletSystem;
+
         [SerializeField] private BulletConfig bulletConfig;
+        [SerializeField] private BulletSystem bulletSystem;
+
         [SerializeField] private LevelBounds levelBounds;
 
         public bool fireRequired;
@@ -30,11 +32,7 @@ namespace ShootEmUp
 
         private void FixedUpdate()
         {
-            if (this.fireRequired)
-            {
-                this.OnFlyBullet();
-                this.fireRequired = false;
-            }
+            CheckFireRequired();
         }
 
         private void HandleMovePlayer(float horizontalDirection)
@@ -49,14 +47,27 @@ namespace ShootEmUp
         private void OnFlyBullet()
         {
             var weapon = this.character.GetComponent<WeaponComponent>();
+            Fire(weapon.Position, weapon.Rotation * Vector3.up, bulletConfig);
+        }
+
+        private void CheckFireRequired()
+        {
+            if (this.fireRequired)
+            {
+                this.OnFlyBullet();
+                this.fireRequired = false;
+            }
+        }
+        public void Fire(Vector2 position, Vector2 direction, BulletConfig bulletConfig)
+        {
             bulletSystem.FlyBulletByArgs(new BulletArgs
             {
                 isPlayer = true,
-                physicsLayer = (int) this.bulletConfig.physicsLayer,
-                color = this.bulletConfig.color,
-                damage = this.bulletConfig.damage,
-                position = weapon.Position,
-                velocity = weapon.Rotation * Vector3.up * this.bulletConfig.speed
+                physicsLayer = (int)bulletConfig.physicsLayer,
+                color = bulletConfig.color,
+                damage = bulletConfig.damage,
+                position = position,
+                velocity = direction * bulletConfig.speed
             });
         }
     }
