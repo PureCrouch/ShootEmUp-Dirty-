@@ -8,6 +8,8 @@ namespace ShootEmUp
         public static event Action<float> OnMoveInput;
         public static event Action OnFireInput;
 
+        private int _inputValue = 1;
+
         private void Update()
         {
             FireInput();
@@ -27,11 +29,11 @@ namespace ShootEmUp
 
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                horizontalDirection = -1;
+                horizontalDirection = -_inputValue;
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                horizontalDirection = 1;
+                horizontalDirection = _inputValue;
             }
 
             OnMoveInput?.Invoke(horizontalDirection); 

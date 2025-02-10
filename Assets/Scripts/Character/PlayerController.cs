@@ -5,6 +5,7 @@ namespace ShootEmUp
     public sealed class PlayerController : MonoBehaviour, IFireable
     {
         [SerializeField] private GameObject character; 
+
         [SerializeField] private GameManager gameManager;
 
         [SerializeField] private BulletConfig bulletConfig;
@@ -17,6 +18,7 @@ namespace ShootEmUp
         private void OnEnable()
         {
             this.character.GetComponent<HitPointsComponent>().hpEmpty += this.OnCharacterDeath;
+
             InputManager.OnMoveInput += HandleMovePlayer;
             InputManager.OnFireInput += HandleFireInput;
         }
@@ -24,6 +26,7 @@ namespace ShootEmUp
         private void OnDisable()
         {
             this.character.GetComponent<HitPointsComponent>().hpEmpty -= this.OnCharacterDeath;
+
             InputManager.OnMoveInput -= HandleMovePlayer;
             InputManager.OnFireInput -= HandleFireInput;
         }

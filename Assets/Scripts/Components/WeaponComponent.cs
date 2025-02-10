@@ -14,7 +14,6 @@ namespace ShootEmUp
             get { return this.firePoint.rotation; }
         }
 
-        [SerializeField]
-        private Transform firePoint;
+        [SerializeField] private Transform firePoint;
     }
 }

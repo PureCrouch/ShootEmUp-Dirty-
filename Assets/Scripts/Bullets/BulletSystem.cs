@@ -14,8 +14,8 @@ namespace ShootEmUp
         [SerializeField] private Bullet prefab;
         [SerializeField] private LevelBounds levelBounds;
 
-        private readonly Queue<Bullet> m_bulletPool = new();
-        private readonly HashSet<Bullet> m_activeBullets = new();
+        private readonly Queue<Bullet> _bulletPool = new();
+        private readonly HashSet<Bullet> _activeBullets = new();
         private readonly List<Bullet> m_cache = new();
         
         private void Awake()
@@ -28,13 +28,13 @@ namespace ShootEmUp
             for (var i = 0; i < this.initialCount; i++)
             {
                 var bullet = Instantiate(this.prefab, this.container);
-                this.m_bulletPool.Enqueue(bullet);
+                this._bulletPool.Enqueue(bullet);
             }
         }
         private void FixedUpdate()
         {
             this.m_cache.Clear();
-            this.m_cache.AddRange(this.m_activeBullets);
+            this.m_cache.AddRange(this._activeBullets);
 
             CheckBulletsInBounds();
         }
@@ -53,7 +53,7 @@ namespace ShootEmUp
 
         public void FlyBulletByArgs(BulletArgs args)
         {
-            if (this.m_bulletPool.TryDequeue(out var bullet))
+            if (this._bulletPool.TryDequeue(out var bullet))
             {
                 bullet.transform.SetParent(this.worldTransform);
             }
@@ -64,7 +64,7 @@ namespace ShootEmUp
             
             bullet.SetBulletArgs(args);
             
-            if (this.m_activeBullets.Add(bullet))
+            if (this._activeBullets.Add(bullet))
             {
                 bullet.OnCollisionEntered += this.OnBulletCollision;
             }
@@ -78,11 +78,11 @@ namespace ShootEmUp
 
         private void RemoveBullet(Bullet bullet)
         {
-            if (this.m_activeBullets.Remove(bullet))
+            if (this._activeBullets.Remove(bullet))
             {
                 bullet.OnCollisionEntered -= this.OnBulletCollision;
                 bullet.transform.SetParent(this.container);
-                this.m_bulletPool.Enqueue(bullet);
+                this._bulletPool.Enqueue(bullet);
             }
         }
         
