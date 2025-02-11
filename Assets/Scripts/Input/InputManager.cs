@@ -9,35 +9,54 @@ namespace ShootEmUp
 
         private int _inputValue = 1;
 
+        private IUserInputListener[] _userInputListeners;
+
+        private void Awake()
+        {
+            _userInputListeners = transform.parent.GetComponentsInChildren<IUserInputListener>();
+        }
         private void Update()
         {
             FireInput();
+            GetHorizontalInput();
         }
 
         public void FireInput()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                NotifyFireInput();
                 _fireInput = true;
             }
         }
 
-        public float GetHorizontalMovement()
+        public void GetHorizontalInput()
         {
-            float horizontalDirection = 0;
-
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                horizontalDirection = -_inputValue;
+                NotifyMoveInput(-_inputValue);
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                horizontalDirection = _inputValue;
+                NotifyMoveInput(_inputValue);
             }
-
-            return horizontalDirection;
+        }
+        private void NotifyFireInput()
+        {
+            foreach (var listener in _userInputListeners)
+            {
+                listener.FireInputReceived(); 
+            }
         }
 
+        private void NotifyMoveInput(int direction)
+        {
+            foreach (var listener in _userInputListeners) 
+            {
+                listener.UserInputReceived(direction);
+            }
+
+        }
         public bool GetFireInput()
         {
             bool fireInput = _fireInput;

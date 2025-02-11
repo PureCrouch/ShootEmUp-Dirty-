@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.Windows;
 
 namespace ShootEmUp
 {
-    public sealed class PlayerController : MonoBehaviour, IFireable
+    public sealed class PlayerController : MonoBehaviour, IFireable, IUserInputListener
     {
         [SerializeField] private GameObject character; 
 
@@ -35,19 +36,16 @@ namespace ShootEmUp
 
         private void FixedUpdate()
         {
-            HandleInput();
             CheckFireRequired();
         }
 
-        private void HandleInput()
+        public void UserInputReceived(int input)
         {
-            float horizontalDirection = _inputHandler.GetHorizontalMovement();
-            HandleMovePlayer(horizontalDirection);
-
-            if (_inputHandler.GetFireInput())
-            {
-                HandleFireInput();
-            }
+            HandleMovePlayer(input);
+        }
+        public void FireInputReceived() 
+        {
+            HandleFireInput();
         }
 
         private void HandleMovePlayer(float horizontalDirection)
@@ -92,5 +90,6 @@ namespace ShootEmUp
                 velocity = direction * bulletConfig.speed
             });
         }
+
     }
 }

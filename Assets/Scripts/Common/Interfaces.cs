@@ -6,10 +6,14 @@ namespace ShootEmUp
 {
     public interface IInputHandler
     {
-        float GetHorizontalMovement();
         bool GetFireInput();
     }
 
+    public interface IUserInputListener
+    {
+        void UserInputReceived(int input);
+        void FireInputReceived();
+    }
     public interface IFireable
     {
         void Fire(Vector2 position, Vector2 direction, BulletConfig bulletConfig);
