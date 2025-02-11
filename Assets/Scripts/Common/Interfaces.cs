@@ -4,11 +4,6 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public interface IInputHandler
-    {
-        bool GetFireInput();
-    }
-
     public interface IUserInputListener
     {
         void UserInputReceived(int input);

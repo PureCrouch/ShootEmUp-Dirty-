@@ -12,8 +12,6 @@ namespace ShootEmUp
         [SerializeField] private BulletConfig bulletConfig;
         [SerializeField] private BulletSystem bulletSystem;
 
-        private IInputHandler _inputHandler;
-
         public bool fireRequired;
 
         private void OnEnable()
@@ -71,11 +69,6 @@ namespace ShootEmUp
         {
             var weapon = character.GetComponent<WeaponComponent>();
             Fire(weapon.Position, weapon.Rotation * Vector3.up, bulletConfig);
-        }
-
-        public void SetInputHandler(IInputHandler inputHandler)
-        {
-            _inputHandler = inputHandler;
         }
 
         public void Fire(Vector2 position, Vector2 direction, BulletConfig bulletConfig)
