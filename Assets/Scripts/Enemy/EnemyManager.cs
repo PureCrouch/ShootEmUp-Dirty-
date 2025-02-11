@@ -21,6 +21,7 @@ namespace ShootEmUp
             while (true)
             {
                 yield return new WaitForSeconds(_secondsToWait);
+                Debug.Log("1 second passed");
                 OnSpawn();
             }
         }
