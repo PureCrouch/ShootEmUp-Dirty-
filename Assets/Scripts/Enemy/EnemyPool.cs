@@ -19,11 +19,11 @@ namespace ShootEmUp
 
         private readonly Queue<GameObject> _enemyPool = new();
 
-        private int _maxEnemies;
+        private int _maxEnemies = 7;
         
         private void Awake()
         {
-            InstantiateEnemy();
+            InstantiateEnemy(_maxEnemies);
         }
 
         public GameObject SpawnEnemy()
@@ -51,9 +51,9 @@ namespace ShootEmUp
             this._enemyPool.Enqueue(enemy);
         }
 
-        public void InstantiateEnemy()
+        public void InstantiateEnemy(int maxEnemies)
         {
-            for (var i = 0; i < _maxEnemies; i++)
+            for (var i = 0; i < maxEnemies; i++)
             {
                 var enemy = Instantiate(this.prefab, this.container);
                 this._enemyPool.Enqueue(enemy);

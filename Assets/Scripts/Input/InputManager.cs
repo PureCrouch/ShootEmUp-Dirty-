@@ -3,27 +3,26 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class InputManager : MonoBehaviour
+    public sealed class InputManager : MonoBehaviour, IInputHandler
     {
-        public static event Action<float> OnMoveInput;
-        public static event Action OnFireInput;
+        private bool _fireInput = false;
 
         private int _inputValue = 1;
 
         private void Update()
         {
             FireInput();
-            MoveInput();
         }
 
         private void FireInput()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                OnFireInput?.Invoke(); 
+                _fireInput = true;
             }
         }
-        private void MoveInput()
+
+        public float GetHorizontalMovement()
         {
             float horizontalDirection = 0;
 
@@ -36,7 +35,15 @@ namespace ShootEmUp
                 horizontalDirection = _inputValue;
             }
 
-            OnMoveInput?.Invoke(horizontalDirection); 
+            return horizontalDirection;
         }
+
+        public bool GetFireInput()
+        {
+            bool fireInput = _fireInput;
+            _fireInput = false;
+            return fireInput;
+        }
+
     }
 }
