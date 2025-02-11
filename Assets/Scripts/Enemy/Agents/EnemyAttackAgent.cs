@@ -44,7 +44,7 @@ namespace ShootEmUp
 
         private void CheckPlayerHitpointsExist()
         {
-            if (!this._target.GetComponent<HitPointsComponent>().IsHitPointsExists())
+            if (!this._target.TryGetComponent(out HitPointsComponent hitPointsComponent) || !hitPointsComponent.IsHitPointsExists())
             {
                 return;
             }

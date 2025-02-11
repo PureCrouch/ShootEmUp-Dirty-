@@ -27,8 +27,7 @@ namespace ShootEmUp
 
         private void OnSpawn()
         {
-            var enemy = this.enemyPool.SpawnEnemy();
-            if (enemy != null)
+            if (this.enemyPool.TrySpawnEnemy(out var enemy))
             {
                 if (this._activeEnemies.Add(enemy))
                 {

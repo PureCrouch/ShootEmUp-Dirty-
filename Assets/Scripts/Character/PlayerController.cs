@@ -11,15 +11,13 @@ namespace ShootEmUp
         [SerializeField] private BulletConfig bulletConfig;
         [SerializeField] private BulletSystem bulletSystem;
 
-        [SerializeField] private LevelBounds levelBounds;
-
         private IInputHandler _inputHandler;
 
         public bool fireRequired;
 
         private void OnEnable()
         {
-            if (TryGetComponent(out HitPointsComponent hitPointsComponent))
+            if (character.TryGetComponent(out HitPointsComponent hitPointsComponent))
             {
                 hitPointsComponent.OnHpEmpty += OnCharacterDeath;
             }
@@ -27,8 +25,8 @@ namespace ShootEmUp
 
         private void OnDisable()
         {
-            if (TryGetComponent(out HitPointsComponent hitPointsComponent))
-            {
+            if (character.TryGetComponent(out HitPointsComponent hitPointsComponent))
+            { 
                 hitPointsComponent.OnHpEmpty -= OnCharacterDeath;
             }
         }

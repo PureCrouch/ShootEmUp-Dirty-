@@ -26,23 +26,29 @@ namespace ShootEmUp
             InstantiateEnemy(_maxEnemies);
         }
 
-        public GameObject SpawnEnemy()
+        public bool TrySpawnEnemy(out GameObject enemy)
         {
-            if (!this._enemyPool.TryDequeue(out var enemy))
+            enemy = null;
+
+            if (!this._enemyPool.TryDequeue(out var dequeuedEnemy))
             {
-                return null;
+                return false; 
             }
 
-            enemy.transform.SetParent(this.worldTransform);
+            dequeuedEnemy.transform.SetParent(this.worldTransform);
 
             var spawnPosition = this.enemyPositions.RandomSpawnPosition();
-            enemy.transform.position = spawnPosition.position;
-            
-            var attackPosition = this.enemyPositions.RandomAttackPosition();
-            enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
+            dequeuedEnemy.transform.position = spawnPosition.position;
 
-            enemy.GetComponent<EnemyAttackAgent>().SetTarget(this.character);
-            return enemy;
+            var attackPosition = this.enemyPositions.RandomAttackPosition();
+            dequeuedEnemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
+
+            dequeuedEnemy.GetComponent<EnemyAttackAgent>().SetTarget(this.character);
+
+            enemy = dequeuedEnemy;
+
+            return true; 
+
         }
 
         public void UnspawnEnemy(GameObject enemy)

@@ -14,7 +14,7 @@ namespace ShootEmUp
             FireInput();
         }
 
-        private void FireInput()
+        public void FireInput()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {

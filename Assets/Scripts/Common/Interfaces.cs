@@ -14,5 +14,4 @@ namespace ShootEmUp
     {
         void Fire(Vector2 position, Vector2 direction, BulletConfig bulletConfig);
     }
-
 }
