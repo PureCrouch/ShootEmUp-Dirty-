@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class PlayerController : MonoBehaviour, IFireable
+    public sealed class PlayerController : Player, IFireable
     {
         [SerializeField] private GameObject character; 
 
@@ -15,6 +15,12 @@ namespace ShootEmUp
 
         public bool fireRequired;
 
+        private void Start()
+        {
+            moveComponent = character.GetComponent<MoveComponent>();
+            weaponComponent = character.GetComponent<WeaponComponent>();
+            hitPointsComponent = character.GetComponent<HitPointsComponent>();
+        }
         private void OnEnable()
         {
             if (character.TryGetComponent(out HitPointsComponent hitPointsComponent))
@@ -53,7 +59,7 @@ namespace ShootEmUp
         private void HandleMovePlayer(float horizontalDirection)
         {
             var movement = new Vector2(horizontalDirection, 0);
-            character.GetComponent<MoveComponent>().MoveByRigidbodyVelocity(movement * Time.fixedDeltaTime);
+            moveComponent.MoveByRigidbodyVelocity(movement * Time.fixedDeltaTime);
         }
 
         private void HandleFireInput()
@@ -71,7 +77,7 @@ namespace ShootEmUp
         }
         private void OnFlyBullet()
         {
-            var weapon = character.GetComponent<WeaponComponent>();
+            var weapon = weaponComponent;
             Fire(weapon.Position, weapon.Rotation * Vector3.up, bulletConfig);
         }
 

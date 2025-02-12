@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace ShootEmUp
@@ -20,7 +21,7 @@ namespace ShootEmUp
         private readonly Queue<GameObject> _enemyPool = new();
 
         private int _maxEnemies = 7;
-        
+
         private void Awake()
         {
             InstantiateEnemy(_maxEnemies);
@@ -30,39 +31,45 @@ namespace ShootEmUp
         {
             enemy = null;
 
-            if (!this._enemyPool.TryDequeue(out var dequeuedEnemy))
+            if (!_enemyPool.TryDequeue(out var dequeuedEnemy))
             {
                 return false; 
             }
 
             dequeuedEnemy.transform.SetParent(this.worldTransform);
 
-            var spawnPosition = this.enemyPositions.RandomSpawnPosition();
+            var spawnPosition = enemyPositions.RandomSpawnPosition();
             dequeuedEnemy.transform.position = spawnPosition.position;
 
-            var attackPosition = this.enemyPositions.RandomAttackPosition();
-            dequeuedEnemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
+            var attackPosition = enemyPositions.RandomAttackPosition();
 
-            dequeuedEnemy.GetComponent<EnemyAttackAgent>().SetTarget(this.character);
+            if (dequeuedEnemy.TryGetComponent(out EnemyMoveAgent moveAgent))
+            {
+                moveAgent.SetDestination(attackPosition.position);
+            }
+
+            if (dequeuedEnemy.TryGetComponent(out EnemyAttackAgent attackAgent))
+            {
+                attackAgent.SetTarget(character);
+            }
 
             enemy = dequeuedEnemy;
 
             return true; 
-
         }
 
         public void UnspawnEnemy(GameObject enemy)
         {
-            enemy.transform.SetParent(this.container);
-            this._enemyPool.Enqueue(enemy);
+            enemy.transform.SetParent(container);
+            _enemyPool.Enqueue(enemy);
         }
 
         public void InstantiateEnemy(int maxEnemies)
         {
             for (var i = 0; i < maxEnemies; i++)
             {
-                var enemy = Instantiate(this.prefab, this.container);
-                this._enemyPool.Enqueue(enemy);
+                var enemy = Instantiate(prefab, container);
+                _enemyPool.Enqueue(enemy);
             }
         }
     }

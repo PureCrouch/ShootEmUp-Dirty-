@@ -27,12 +27,19 @@ namespace ShootEmUp
 
         private void OnSpawn()
         {
-            if (this.enemyPool.TrySpawnEnemy(out var enemy))
+            if (enemyPool.TrySpawnEnemy(out var enemy))
             {
-                if (this._activeEnemies.Add(enemy))
+                if (_activeEnemies.Add(enemy))
                 {
-                    enemy.GetComponent<HitPointsComponent>().OnHpEmpty += this.OnDestroyed;
-                    enemy.GetComponent<EnemyAttackAgent>().OnFire += this.OnFire;
+                    if (enemy.TryGetComponent(out HitPointsComponent hpComponent))
+                    {
+                        hpComponent.OnHpEmpty += OnDestroyed;
+                    }
+
+                    if (enemy.TryGetComponent(out EnemyAttackAgent attackAgent))
+                    {
+                        attackAgent.OnFire += OnFire;
+                    }
                 }
             }
         }
@@ -40,8 +47,16 @@ namespace ShootEmUp
         {
             if (_activeEnemies.Remove(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().OnHpEmpty -= this.OnDestroyed;
-                enemy.GetComponent<EnemyAttackAgent>().OnFire -= this.OnFire;
+
+                if (enemy.TryGetComponent(out HitPointsComponent hpComponent))
+                {
+                    hpComponent.OnHpEmpty -= OnDestroyed;
+                }
+
+                if (enemy.TryGetComponent(out EnemyAttackAgent attackAgent))
+                {
+                    attackAgent.OnFire -= OnFire;
+                }
 
                 enemyPool.UnspawnEnemy(enemy);
             }

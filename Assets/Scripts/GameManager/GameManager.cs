@@ -13,10 +13,6 @@ namespace ShootEmUp
             {
                 playerController.SetInputHandler(inputManager);
             }
-            else
-            {
-                Debug.LogError("No InputManager / PlayerController found");
-            }
         }
 
         public void FinishGame()

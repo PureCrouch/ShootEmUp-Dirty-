@@ -25,64 +25,65 @@ namespace ShootEmUp
 
         private void InstantiateBullet()
         {
-            for (var i = 0; i < this.initialCount; i++)
+            for (var i = 0; i < initialCount; i++)
             {
-                var bullet = Instantiate(this.prefab, this.container);
-                this._bulletPool.Enqueue(bullet);
+                var bullet = Instantiate(prefab, container);
+                _bulletPool.Enqueue(bullet);
             }
         }
+
         private void FixedUpdate()
         {
-            this.m_cache.Clear();
-            this.m_cache.AddRange(this._activeBullets);
+            m_cache.Clear();
+            m_cache.AddRange(_activeBullets);
 
             CheckBulletsInBounds();
         }
 
         private void CheckBulletsInBounds()
         {
-            for (int i = 0, count = this.m_cache.Count; i < count; i++)
+            for (int i = 0, count = m_cache.Count; i < count; i++)
             {
-                var bullet = this.m_cache[i];
-                if (!this.levelBounds.InBounds(bullet.transform.position))
+                var bullet = m_cache[i];
+                if (!levelBounds.InBounds(bullet.transform.position))
                 {
-                    this.RemoveBullet(bullet);
+                    RemoveBullet(bullet);
                 }
             }
         }
 
         public void FlyBulletByArgs(BulletArgs args)
         {
-            if (this._bulletPool.TryDequeue(out var bullet))
+            if (_bulletPool.TryDequeue(out var bullet))
             {
-                bullet.transform.SetParent(this.worldTransform);
+                bullet.transform.SetParent(worldTransform);
             }
             else
             {
-                bullet = Instantiate(this.prefab, this.worldTransform);
+                bullet = Instantiate(prefab, worldTransform);
             }
             
             bullet.SetBulletArgs(args);
             
-            if (this._activeBullets.Add(bullet))
+            if (_activeBullets.Add(bullet))
             {
-                bullet.OnCollisionEntered += this.OnBulletCollision;
+                bullet.OnCollisionEntered += OnBulletCollision;
             }
         }
         
         private void OnBulletCollision(Bullet bullet, Collision2D collision)
         {
             BulletUtils.DealDamage(bullet, collision.gameObject);
-            this.RemoveBullet(bullet);
+            RemoveBullet(bullet);
         }
 
         private void RemoveBullet(Bullet bullet)
         {
-            if (this._activeBullets.Remove(bullet))
+            if (_activeBullets.Remove(bullet))
             {
-                bullet.OnCollisionEntered -= this.OnBulletCollision;
-                bullet.transform.SetParent(this.container);
-                this._bulletPool.Enqueue(bullet);
+                bullet.OnCollisionEntered -= OnBulletCollision;
+                bullet.transform.SetParent(container);
+                _bulletPool.Enqueue(bullet);
             }
         }
         

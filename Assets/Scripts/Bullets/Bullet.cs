@@ -28,27 +28,27 @@ namespace ShootEmUp
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            this.OnCollisionEntered?.Invoke(this, collision);
+            OnCollisionEntered?.Invoke(this, collision);
         }
 
         private void SetVelocity(Vector2 velocity)
         {
-            this.rigidbody2D.velocity = velocity;
+            rigidbody2D.velocity = velocity;
         }
 
         private void SetPhysicsLayer(int physicsLayer)
         {
-            this.gameObject.layer = physicsLayer;
+            gameObject.layer = physicsLayer;
         }
 
         private void SetPosition(Vector3 position)
         {
-            this.transform.position = position;
+            transform.position = position;
         }
 
         private void SetColor(Color color)
         {
-            this.spriteRenderer.color = color;
+            spriteRenderer.color = color;
         }
     }
 }

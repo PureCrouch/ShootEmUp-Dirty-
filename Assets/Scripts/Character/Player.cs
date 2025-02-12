@@ -5,17 +5,8 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class Player : MonoBehaviour
+    public class Player : Unit
     {
-        protected MoveComponent moveComponent;
-        protected WeaponComponent weaponComponent;
-        protected HitPointsComponent hitPointsComponent;
 
-        protected void Awake()
-        {
-            moveComponent = GetComponent<MoveComponent>();
-            weaponComponent = GetComponent<WeaponComponent>();
-            hitPointsComponent = GetComponent<HitPointsComponent>();
-        }
     }
 }

@@ -11,16 +11,16 @@ namespace ShootEmUp
         
         public bool IsHitPointsExists() 
         {
-            return this.hitPoints > 0;
+            return hitPoints > 0;
         }
 
         public void TakeDamage(int damage)
         {
-            this.hitPoints -= damage;
+            hitPoints -= damage;
 
-            if (this.hitPoints <= 0)
+            if (hitPoints <= 0)
             {
-                this.OnHpEmpty?.Invoke(this.gameObject);
+                OnHpEmpty?.Invoke(gameObject);
             }
         }
     }
