@@ -4,10 +4,12 @@ namespace ShootEmUp
 {
     public sealed class GameManager : MonoBehaviour, IStartGameListener, IPauseGameListener, IResumeGameListener, IFinishGameListener
     {
+
         private void Awake()
         {
-            Time.timeScale = 0;
+            Time.timeScale = 1;
         }
+
         public void StartGame()
         {
             Debug.Log("Start");

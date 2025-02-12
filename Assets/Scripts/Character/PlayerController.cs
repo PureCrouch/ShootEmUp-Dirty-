@@ -5,9 +5,9 @@ namespace ShootEmUp
 {
     public sealed class PlayerController : MonoBehaviour, IFireable, IUserInputListener, IStartGameListener, IPauseGameListener, IResumeGameListener, IFinishGameListener, IUpdatable
     {
-        [SerializeField] private GameObject character; 
+        [SerializeField] private GameObject character;
 
-        [SerializeField] private GameManager gameManager;
+        [SerializeField] private GameStateController gameStateController;
 
         [SerializeField] private BulletConfig bulletConfig;
         [SerializeField] private BulletSystem bulletSystem;
@@ -33,7 +33,7 @@ namespace ShootEmUp
             }
         }
 
-        private void OnCharacterDeath(GameObject _) => gameManager.FinishGame();
+        private void OnCharacterDeath(GameObject _) => gameStateController.FinishGame();
 
         public void CustomUpdate()
         {
