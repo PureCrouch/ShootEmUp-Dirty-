@@ -3,7 +3,7 @@ using UnityEngine.Windows;
 
 namespace ShootEmUp
 {
-    public sealed class PlayerController : MonoBehaviour, IFireable, IUserInputListener
+    public sealed class PlayerController : MonoBehaviour, IFireable, IUserInputListener, IStartGameListener, IPauseGameListener, IResumeGameListener, IFinishGameListner
     {
         [SerializeField] private GameObject character; 
 
@@ -13,6 +13,9 @@ namespace ShootEmUp
         [SerializeField] private BulletSystem bulletSystem;
 
         public bool fireRequired;
+
+        private bool _canMove;
+        private bool _canFire;
 
         private void OnEnable()
         {
@@ -43,11 +46,16 @@ namespace ShootEmUp
         }
         public void FireInputReceived() 
         {
+            if (!_canFire)
+                return;
             HandleFireInput();
         }
 
         private void HandleMovePlayer(float horizontalDirection)
         {
+            if (!_canMove) 
+                return;
+
             var movement = new Vector2(horizontalDirection, 0);
             character.GetComponent<MoveComponent>().MoveByRigidbodyVelocity(movement * Time.fixedDeltaTime);
         }
@@ -84,5 +92,27 @@ namespace ShootEmUp
             });
         }
 
+        public void StartGame()
+        {
+            _canMove = true;
+            _canFire = true;
+        }
+
+        public void PauseGame()
+        {
+            _canMove = false;
+            _canFire = false;
+        }
+
+        public void ResumeGame()
+        {
+            _canMove = true;
+            _canFire = true;
+        }
+        public void FinishGame()
+        {
+            _canMove = false;
+            _canFire = false;
+        }
     }
 }
