@@ -19,23 +19,28 @@ namespace ShootEmUp
 
     }
 
-    public interface IStartGameListener
+    public interface IStartGameListener: IGameStateListener
     {
-        void StartGame();   
+        void StartGame();
     }
 
-    public interface IPauseGameListener
+    public interface IPauseGameListener : IGameStateListener
     {
         void PauseGame();   
     }
 
-    public interface IResumeGameListener
+    public interface IResumeGameListener : IGameStateListener
     {
         void ResumeGame();
     }
 
-    public interface IFinishGameListner
+    public interface IFinishGameListener : IGameStateListener
     {
         void FinishGame();
+    }
+
+    public interface IUpdatable
+    {
+        void CustomUpdate();
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine.Windows;
 
 namespace ShootEmUp
 {
-    public sealed class PlayerController : MonoBehaviour, IFireable, IUserInputListener, IStartGameListener, IPauseGameListener, IResumeGameListener, IFinishGameListner
+    public sealed class PlayerController : MonoBehaviour, IFireable, IUserInputListener, IStartGameListener, IPauseGameListener, IResumeGameListener, IFinishGameListener, IUpdatable
     {
         [SerializeField] private GameObject character; 
 
@@ -35,7 +35,7 @@ namespace ShootEmUp
 
         private void OnCharacterDeath(GameObject _) => gameManager.FinishGame();
 
-        private void FixedUpdate()
+        public void CustomUpdate()
         {
             CheckFireRequired();
         }
@@ -46,9 +46,8 @@ namespace ShootEmUp
         }
         public void FireInputReceived() 
         {
-            if (!_canFire)
-                return;
-            HandleFireInput();
+            if (_canFire)
+                HandleFireInput();
         }
 
         private void HandleMovePlayer(float horizontalDirection)

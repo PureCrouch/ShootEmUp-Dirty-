@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class InputManager : MonoBehaviour
+    public sealed class InputManager : MonoBehaviour, IUpdatable
     {
         private bool _fireInput = false;
 
@@ -15,12 +15,12 @@ namespace ShootEmUp
         {
             _userInputListeners = transform.parent.GetComponentsInChildren<IUserInputListener>();
         }
-        private void Update()
+
+        public void CustomUpdate()
         {
             FireInput();
             GetHorizontalInput();
         }
-
         public void FireInput()
         {
             if (Input.GetKeyDown(KeyCode.Space))
