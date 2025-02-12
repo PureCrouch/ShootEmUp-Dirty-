@@ -21,6 +21,7 @@ namespace ShootEmUp
             FireInput();
             GetHorizontalInput();
         }
+
         public void FireInput()
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -41,6 +42,7 @@ namespace ShootEmUp
                 NotifyMoveInput(_inputValue);
             }
         }
+
         private void NotifyFireInput()
         {
             foreach (var listener in _userInputListeners)

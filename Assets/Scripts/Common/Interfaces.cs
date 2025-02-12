@@ -43,4 +43,9 @@ namespace ShootEmUp
     {
         void CustomUpdate();
     }
+
+    public interface IFixedUpdatable
+    {
+        void CustomFixedUpdate();
+    }
 }

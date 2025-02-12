@@ -30,20 +30,20 @@ namespace ShootEmUp
         {
             enemy = null;
 
-            if (!this._enemyPool.TryDequeue(out var dequeuedEnemy))
+            if (!_enemyPool.TryDequeue(out var dequeuedEnemy))
             {
                 return false; 
             }
 
-            dequeuedEnemy.transform.SetParent(this.worldTransform);
+            dequeuedEnemy.transform.SetParent(worldTransform);
 
-            var spawnPosition = this.enemyPositions.RandomSpawnPosition();
+            var spawnPosition = enemyPositions.RandomSpawnPosition();
             dequeuedEnemy.transform.position = spawnPosition.position;
 
-            var attackPosition = this.enemyPositions.RandomAttackPosition();
-            dequeuedEnemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
+            var attackPosition = enemyPositions.RandomAttackPosition();
 
-            dequeuedEnemy.GetComponent<EnemyAttackAgent>().SetTarget(this.character);
+            dequeuedEnemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
+            dequeuedEnemy.GetComponent<EnemyAttackAgent>().SetTarget(character);
 
             enemy = dequeuedEnemy;
 
@@ -53,16 +53,16 @@ namespace ShootEmUp
 
         public void UnspawnEnemy(GameObject enemy)
         {
-            enemy.transform.SetParent(this.container);
-            this._enemyPool.Enqueue(enemy);
+            enemy.transform.SetParent(container);
+            _enemyPool.Enqueue(enemy);
         }
 
         public void InstantiateEnemy(int maxEnemies)
         {
             for (var i = 0; i < maxEnemies; i++)
             {
-                var enemy = Instantiate(this.prefab, this.container);
-                this._enemyPool.Enqueue(enemy);
+                var enemy = Instantiate(prefab, container);
+                _enemyPool.Enqueue(enemy);
             }
         }
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour
+    public sealed class EnemyAttackAgent : MonoBehaviour, IFixedUpdatable
     {
         public delegate void FireHandler(GameObject enemy, Vector2 position, Vector2 direction);
 
@@ -17,26 +17,29 @@ namespace ShootEmUp
         private GameObject _target;
         private float _currentTime;
 
+        private void Awake()
+        {
+            FindObjectOfType<FixedUpdateController>().RegisterFixedUpdatable(this);
+        }
         public void SetTarget(GameObject target)
         {
-            this._target = target;
+            _target = target;
         }
 
         public void Reset()
         {
-            this._currentTime = this.countdown;
+            _currentTime = countdown;
         }
 
-        private void FixedUpdate()
+        public void CustomFixedUpdate()
         {
             CheckEnemyMovement();
             CheckPlayerHitpointsExist();
             CheckEnemyFireReload();
         }
-
         private void CheckEnemyMovement()
         {
-            if (!this.moveAgent.IsReached)
+            if (!moveAgent.IsReached)
             {
                 return;
             }
@@ -44,7 +47,7 @@ namespace ShootEmUp
 
         private void CheckPlayerHitpointsExist()
         {
-            if (!this._target.TryGetComponent(out HitPointsComponent hitPointsComponent) || !hitPointsComponent.IsHitPointsExists())
+            if (_target.TryGetComponent(out HitPointsComponent hitPointsComponent) || !hitPointsComponent.IsHitPointsExists())
             {
                 return;
             }
@@ -52,19 +55,20 @@ namespace ShootEmUp
 
         private void CheckEnemyFireReload()
         {
-            this._currentTime -= Time.fixedDeltaTime;
-            if (this._currentTime <= 0)
+            _currentTime -= Time.fixedDeltaTime;
+            if (_currentTime <= 0)
             {
-                this.SetFireOptions();
-                this._currentTime += this.countdown;
+                SetFireOptions();
+                _currentTime += countdown;
             }
         }
         private void SetFireOptions()
         {
-            var startPosition = this.weaponComponent.Position;
-            var vector = (Vector2) this._target.transform.position - startPosition;
+            var startPosition = weaponComponent.Position;
+            var vector = (Vector2) _target.transform.position - startPosition;
             var direction = vector.normalized;
-            this.OnFire?.Invoke(this.gameObject, startPosition, direction);
+            OnFire?.Invoke(gameObject, startPosition, direction);
         }
+
     }
 }
