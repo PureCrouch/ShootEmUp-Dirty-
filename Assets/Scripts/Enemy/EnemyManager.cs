@@ -12,7 +12,7 @@ namespace ShootEmUp
 
         [SerializeField] private BulletSystem bulletSystem;
         
-        private readonly HashSet<GameObject> _activeEnemies = new();
+        private readonly HashSet<Enemy> _activeEnemies = new();
 
         private int _secondsToWait = 1;
 
@@ -27,38 +27,26 @@ namespace ShootEmUp
 
         private void OnSpawn()
         {
-            if (enemyPool.TrySpawnEnemy(out var enemy))
+            if (enemyPool.TrySpawnEnemy(out var enemyObject))
             {
-                if (_activeEnemies.Add(enemy))
-                {
-                    if (enemy.TryGetComponent(out HitPointsComponent hpComponent))
-                    {
-                        hpComponent.OnHpEmpty += OnDestroyed;
-                    }
+                Enemy enemy = enemyObject.GetComponent<Enemy>();
 
-                    if (enemy.TryGetComponent(out EnemyAttackAgent attackAgent))
-                    {
-                        attackAgent.OnFire += OnFire;
-                    }
+                if (_activeEnemies.Add(enemyObject.GetComponent<Enemy>()))
+                {
+                    enemy.OnHpEmpty += OnDestroyed;
+
+                    enemy.OnFire += OnFire;
                 }
             }
         }
-        private void OnDestroyed(GameObject enemy)
+        private void OnDestroyed(Enemy enemy)
         {
             if (_activeEnemies.Remove(enemy))
             {
+                enemy.OnHpEmpty -= OnDestroyed; 
+                enemy.OnFire -= OnFire;
 
-                if (enemy.TryGetComponent(out HitPointsComponent hpComponent))
-                {
-                    hpComponent.OnHpEmpty -= OnDestroyed;
-                }
-
-                if (enemy.TryGetComponent(out EnemyAttackAgent attackAgent))
-                {
-                    attackAgent.OnFire -= OnFire;
-                }
-
-                enemyPool.UnspawnEnemy(enemy);
+                enemyPool.UnspawnEnemy(enemy.transform.gameObject);
             }
         }
 
@@ -72,11 +60,11 @@ namespace ShootEmUp
             bulletSystem.FlyBulletByArgs(new BulletArgs
             {
                 isPlayer = false,
-                physicsLayer = (int)bulletConfig.physicsLayer,
-                color = bulletConfig.color,
-                damage = bulletConfig.damage,
+                physicsLayer = (int)bulletConfig.PhysicsLayer,
+                color = bulletConfig.Color,
+                damage = bulletConfig.Damage,
                 position = position,
-                velocity = direction * bulletConfig.speed
+                velocity = direction * bulletConfig.Speed
             });
         }
     }

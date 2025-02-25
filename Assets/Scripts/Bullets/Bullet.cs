@@ -7,9 +7,9 @@ namespace ShootEmUp
     {
         public event Action<Bullet, Collision2D> OnCollisionEntered;
 
-        [NonSerialized] public bool isPlayer;
+        [NonSerialized] public bool IsPlayer;
 
-        [NonSerialized] public int damage;
+        [NonSerialized] public int Damage;
 
         [SerializeField] private new Rigidbody2D rigidbody2D;
 
@@ -21,8 +21,8 @@ namespace ShootEmUp
             SetColor(bulletArgs.color);
             SetPhysicsLayer(bulletArgs.physicsLayer);
             SetVelocity(bulletArgs.velocity);
-            damage = bulletArgs.damage;
-            isPlayer = bulletArgs.isPlayer;
+            Damage = bulletArgs.damage;
+            IsPlayer = bulletArgs.isPlayer;
         }
         
 

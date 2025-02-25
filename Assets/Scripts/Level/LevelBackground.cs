@@ -5,15 +5,15 @@ namespace ShootEmUp
 {
     public sealed class LevelBackground : MonoBehaviour
     {
-        private float startPositionY;
-        private float endPositionY;
-        private float movingSpeedY;
-        private float positionX;
-        private float positionZ;
+        private float _startPositionY;
+        private float _endPositionY;
+        private float _movingSpeedY;
+        private float _positionX;
+        private float _positionZ;
 
-        private Transform myTransform;
+        private Transform _myTransform;
 
-        [SerializeField] private Params myParams;
+        [SerializeField] private Params _params;
 
         private void Awake()
         {
@@ -28,39 +28,39 @@ namespace ShootEmUp
         [Serializable]
         public sealed class Params
         {
-            [SerializeField] public float startPositionY;
+            [SerializeField] public float StartPositionY;
 
-            [SerializeField] public float endPositionY;
+            [SerializeField] public float EndPositionY;
 
-            [SerializeField] public float movingSpeedY;
+            [SerializeField] public float MovingSpeedY;
         }
 
         private void SetBackgroundParams()
         {
-            startPositionY = myParams.startPositionY;
-            endPositionY = myParams.endPositionY;
-            movingSpeedY = myParams.movingSpeedY;
-            myTransform = transform;
-            var position = myTransform.position;
-            positionX = position.x;
-            positionZ = position.z;
+            _startPositionY = _params.StartPositionY;
+            _endPositionY = _params.EndPositionY;
+            _movingSpeedY = _params.MovingSpeedY;
+            _myTransform = transform;
+            var position = _myTransform.position;
+            _positionX = position.x;
+            _positionZ = position.z;
         }
 
         private void MoveBackground()
         {
-            if (myTransform.position.y <= endPositionY)
+            if (_myTransform.position.y <= _endPositionY)
             {
-                myTransform.position = new Vector3(
-                    positionX,
-                    startPositionY,
-                    positionZ
+                _myTransform.position = new Vector3(
+                    _positionX,
+                    _startPositionY,
+                    _positionZ
                 );
             }
 
-                myTransform.position -= new Vector3(
-                positionX,
-                movingSpeedY * Time.fixedDeltaTime,
-                positionZ
+                _myTransform.position -= new Vector3(
+                _positionX,
+                _movingSpeedY * Time.fixedDeltaTime,
+                _positionZ
             );
         }
     }

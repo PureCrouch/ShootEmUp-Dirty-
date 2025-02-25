@@ -13,7 +13,7 @@ namespace ShootEmUp
 
         private IInputHandler _inputHandler;
 
-        public bool fireRequired;
+        public bool FireRequired;
 
         private void Start()
         {
@@ -23,6 +23,8 @@ namespace ShootEmUp
         }
         private void OnEnable()
         {
+            if (character == null) return;
+
             if (character.TryGetComponent(out HitPointsComponent hitPointsComponent))
             {
                 hitPointsComponent.OnHpEmpty += OnCharacterDeath;
@@ -31,6 +33,8 @@ namespace ShootEmUp
 
         private void OnDisable()
         {
+            if (character == null) return;
+
             if (character.TryGetComponent(out HitPointsComponent hitPointsComponent))
             { 
                 hitPointsComponent.OnHpEmpty -= OnCharacterDeath;
@@ -64,15 +68,15 @@ namespace ShootEmUp
 
         private void HandleFireInput()
         {
-            fireRequired = true;
+            FireRequired = true;
         }
 
         private void CheckFireRequired()
         {
-            if (fireRequired)
+            if (FireRequired)
             {
                 OnFlyBullet();
-                fireRequired = false;
+                FireRequired = false;
             }
         }
         private void OnFlyBullet()
@@ -91,11 +95,11 @@ namespace ShootEmUp
             bulletSystem.FlyBulletByArgs(new BulletArgs
             {
                 isPlayer = true,
-                physicsLayer = (int)bulletConfig.physicsLayer,
-                color = bulletConfig.color,
-                damage = bulletConfig.damage,
+                physicsLayer = (int)bulletConfig.PhysicsLayer,
+                color = bulletConfig.Color,
+                damage = bulletConfig.Damage,
                 position = position,
-                velocity = direction * bulletConfig.speed
+                velocity = direction * bulletConfig.Speed
             });
         }
     }

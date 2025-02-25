@@ -767,7 +767,7 @@ MonoBehaviour:
   gameManager: {fileID: 3951702117947426123}
   bulletConfig: {fileID: 11400000, guid: 7138ae5d32d814e0ca50c616c65ea105, type: 2}
   bulletSystem: {fileID: 363245577}
-  fireRequired: 0
+  FireRequired: 0
 --- !u!1 &61006797492197339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,10 +1384,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5377a5d4caa94482972174d0a74ac4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myParams:
-    startPositionY: 19
-    endPositionY: -38
-    movingSpeedY: 5
+  _params:
+    StartPositionY: 19
+    EndPositionY: -38
+    MovingSpeedY: 5
 --- !u!1 &4914023371208914563
 GameObject:
   m_ObjectHideFlags: 0

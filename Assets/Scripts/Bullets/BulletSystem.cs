@@ -16,7 +16,7 @@ namespace ShootEmUp
 
         private readonly Queue<Bullet> _bulletPool = new();
         private readonly HashSet<Bullet> _activeBullets = new();
-        private readonly List<Bullet> m_cache = new();
+        private readonly List<Bullet> _cache = new();
         
         private void Awake()
         {
@@ -34,17 +34,17 @@ namespace ShootEmUp
 
         private void FixedUpdate()
         {
-            m_cache.Clear();
-            m_cache.AddRange(_activeBullets);
+            _cache.Clear();
+            _cache.AddRange(_activeBullets);
 
             CheckBulletsInBounds();
         }
 
         private void CheckBulletsInBounds()
         {
-            for (int i = 0, count = m_cache.Count; i < count; i++)
+            for (int i = 0, count = _cache.Count; i < count; i++)
             {
-                var bullet = m_cache[i];
+                var bullet = _cache[i];
                 if (!levelBounds.InBounds(bullet.transform.position))
                 {
                     RemoveBullet(bullet);

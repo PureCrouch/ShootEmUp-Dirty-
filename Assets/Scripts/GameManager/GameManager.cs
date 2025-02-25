@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ShootEmUp
@@ -9,9 +10,14 @@ namespace ShootEmUp
             PlayerController playerController = FindObjectOfType<PlayerController>();
             InputManager inputManager = FindObjectOfType<InputManager>();
 
-            if (playerController != null && inputManager != null)
+            try
             {
                 playerController.SetInputHandler(inputManager);
+            }
+            catch (NullReferenceException)
+            {
+                Debug.Log("No player controller / input manager found");
+
             }
         }
 

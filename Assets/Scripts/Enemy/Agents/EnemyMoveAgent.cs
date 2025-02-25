@@ -4,6 +4,8 @@ namespace ShootEmUp
 {
     public sealed class EnemyMoveAgent : MonoBehaviour
     {
+
+        private float _magnitudeBorder = 0.25f;
         public bool IsReached
         {
             get { return _isReached; }
@@ -34,7 +36,7 @@ namespace ShootEmUp
             }
 
             var vector = _destination - (Vector2)transform.position;
-            if (vector.magnitude <= 0.25f)
+            if (vector.magnitude <= _magnitudeBorder)
             {
                 _isReached = true;
                 return;
