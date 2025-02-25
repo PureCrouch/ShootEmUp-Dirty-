@@ -236,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponComponent: {fileID: 5568771391735819374}
   moveAgent: {fileID: 8186052948131603766}
-  countdown: 10
+  countdown: 3
 --- !u!1 &2239154907127902911
 GameObject:
   m_ObjectHideFlags: 0

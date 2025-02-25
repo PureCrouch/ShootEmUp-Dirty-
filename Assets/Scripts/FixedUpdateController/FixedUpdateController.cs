@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 namespace ShootEmUp
 {
-    public class FixedUpdateController : MonoBehaviour
+    public class FixedUpdateController : MonoBehaviour, IStartGameListener
     {
         private List<IFixedUpdatable> _fixedUpdatables = new List<IFixedUpdatable>();
 
@@ -33,11 +34,18 @@ namespace ShootEmUp
             }
         }
 
+        public void StartGame()
+        {
+            RegisterExistingFixedUpdatables();
+        }
         void FixedUpdate()
         {
-            foreach (var fixedUpdatable in _fixedUpdatables)
+            if (PauseManager.IsPaused == false)
             {
-                fixedUpdatable.CustomFixedUpdate();
+                foreach (var fixedUpdatable in _fixedUpdatables)
+                {
+                    fixedUpdatable.CustomFixedUpdate();
+                }
             }
         }
     }

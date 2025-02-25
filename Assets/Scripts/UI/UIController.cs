@@ -5,11 +5,12 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public class UIController : MonoBehaviour, IStartGameListener, IPauseGameListener, IResumeGameListener
+    public class UIController : MonoBehaviour, IStartGameListener, IPauseGameListener, IResumeGameListener, IFinishGameListener
     {
         [SerializeField] private GameObject startButton;
         [SerializeField] private GameObject pauseButton;
         [SerializeField] private GameObject resumeButton;
+        [SerializeField] private GameObject finishButton;
 
         [SerializeField] private TMP_Text startText;
 
@@ -29,13 +30,15 @@ namespace ShootEmUp
             startText.text = " ";
 
             gameStateController.StartGame();
+
+            Debug.Log("UI Start");
         }
 
         public void OnStartButtonClick()
         {
             Debug.Log("Start Pressed");
             StartCoroutine(StartCountdown());
-        }
+        } 
 
         public void OnPauseButtonClick()
         {
@@ -64,6 +67,11 @@ namespace ShootEmUp
             pauseButton.SetActive(true);
         }
 
+        public void FinishGame()
+        {
+            pauseButton.SetActive(false);
+            finishButton.SetActive(true);
+        }
     }
 }
 

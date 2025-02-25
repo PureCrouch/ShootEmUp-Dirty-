@@ -23,7 +23,7 @@ namespace ShootEmUp
         
         private void Awake()
         {
-            InstantiateEnemy(_maxEnemies);
+           InstantiateEnemy(_maxEnemies);
         }
 
         public bool TrySpawnEnemy(out GameObject enemy)

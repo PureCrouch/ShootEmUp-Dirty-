@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class EnemyManager : MonoBehaviour, IFireable
+    public sealed class EnemyManager : MonoBehaviour, IFireable, IStartGameListener
     {
         [SerializeField] private BulletConfig bulletConfig;
 
@@ -14,7 +14,7 @@ namespace ShootEmUp
         
         private readonly HashSet<GameObject> _activeEnemies = new();
 
-        private int _secondsToWait = 1;
+        private int _secondsToWait = 0;
 
         private IEnumerator Start()
         {
@@ -25,14 +25,19 @@ namespace ShootEmUp
             }
         }
 
+        public void StartGame()
+        {
+            _secondsToWait = 1;
+        }
+
         private void OnSpawn()
         {
-            if (this.enemyPool.TrySpawnEnemy(out var enemy))
+            if (enemyPool.TrySpawnEnemy(out var enemy))
             {
-                if (this._activeEnemies.Add(enemy))
+                if (_activeEnemies.Add(enemy))
                 {
-                    enemy.GetComponent<HitPointsComponent>().OnHpEmpty += this.OnDestroyed;
-                    enemy.GetComponent<EnemyAttackAgent>().OnFire += this.OnFire;
+                    enemy.GetComponent<HitPointsComponent>().OnHpEmpty += OnDestroyed;
+                    enemy.GetComponent<EnemyAttackAgent>().OnFire += OnFire;
                 }
             }
         }
@@ -40,8 +45,8 @@ namespace ShootEmUp
         {
             if (_activeEnemies.Remove(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().OnHpEmpty -= this.OnDestroyed;
-                enemy.GetComponent<EnemyAttackAgent>().OnFire -= this.OnFire;
+                enemy.GetComponent<HitPointsComponent>().OnHpEmpty -= OnDestroyed;
+                enemy.GetComponent<EnemyAttackAgent>().OnFire -= OnFire;
 
                 enemyPool.UnspawnEnemy(enemy);
             }

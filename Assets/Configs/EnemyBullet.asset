@@ -15,4 +15,4 @@ MonoBehaviour:
   physicsLayer: 13
   color: {r: 1, g: 0.17592013, b: 0, a: 1}
   damage: 1
-  speed: 1
+  speed: 2

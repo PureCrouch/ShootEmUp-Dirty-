@@ -17,10 +17,6 @@ namespace ShootEmUp
         private GameObject _target;
         private float _currentTime;
 
-        private void Awake()
-        {
-            FindObjectOfType<FixedUpdateController>().RegisterFixedUpdatable(this);
-        }
         public void SetTarget(GameObject target)
         {
             _target = target;
@@ -33,24 +29,7 @@ namespace ShootEmUp
 
         public void CustomFixedUpdate()
         {
-            CheckEnemyMovement();
-            CheckPlayerHitpointsExist();
             CheckEnemyFireReload();
-        }
-        private void CheckEnemyMovement()
-        {
-            if (!moveAgent.IsReached)
-            {
-                return;
-            }
-        }
-
-        private void CheckPlayerHitpointsExist()
-        {
-            if (_target.TryGetComponent(out HitPointsComponent hitPointsComponent) || !hitPointsComponent.IsHitPointsExists())
-            {
-                return;
-            }
         }
 
         private void CheckEnemyFireReload()

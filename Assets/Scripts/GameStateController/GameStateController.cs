@@ -1,6 +1,7 @@
 using ShootEmUp;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ShootEmUp
@@ -17,11 +18,25 @@ namespace ShootEmUp
 
         public GameState state;
 
-        private IGameStateListener[] _gameStateListeners;
+        private List<IGameStateListener> _gameStateListeners = new List<IGameStateListener>();
 
         private void Awake()
         {
-            _gameStateListeners = transform.parent.GetComponentsInChildren<IGameStateListener>();
+            var existingListeners = FindObjectsOfType<MonoBehaviour>(true).OfType<IGameStateListener>().ToArray();
+            foreach (var updatable in existingListeners)
+            {
+                RegisterGameStateListener(updatable);
+            }
+
+            Debug.Log(_gameStateListeners);
+        }
+
+        public void RegisterGameStateListener(IGameStateListener listener)
+        {
+            if (!_gameStateListeners.Contains(listener))
+            {
+                _gameStateListeners.Add(listener);
+            }
         }
 
         [ContextMenu("Start")]

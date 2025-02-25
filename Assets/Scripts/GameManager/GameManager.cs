@@ -7,31 +7,31 @@ namespace ShootEmUp
 
         private void Awake()
         {
-            Time.timeScale = 1;
+            PauseManager.SetPause();
         }
 
         public void StartGame()
         {
+            PauseManager.SetUnpause();
             Debug.Log("Start");
-            Time.timeScale = 1;
         }
 
         public void PauseGame()
         {
+            PauseManager.SetPause();
             Debug.Log("Pause");
-            Time.timeScale = 0;
         }
 
         public void ResumeGame()
         {
+            PauseManager.SetUnpause();
             Debug.Log("Resume");
-            Time.timeScale = 1;
         }
 
         public void FinishGame()
         {
-            Debug.Log("Game over!");
             Time.timeScale = 0;
+            Debug.Log("Game over!");
         }
 
     }
