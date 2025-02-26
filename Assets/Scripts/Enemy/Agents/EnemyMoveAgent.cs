@@ -11,12 +11,16 @@ namespace ShootEmUp
             get { return _isReached; }
         }
 
-        [SerializeField] private MoveComponent moveComponent;
+        private MoveComponent _moveComponent;
 
         private Vector2 _destination;
 
         private bool _isReached;
 
+        private void Awake()
+        {
+            _moveComponent = GetComponent<MoveComponent>();
+        }
         public void SetDestination(Vector2 endPoint)
         {
             _destination = endPoint;
@@ -43,7 +47,7 @@ namespace ShootEmUp
             }
 
             var direction = vector.normalized * Time.fixedDeltaTime;
-            moveComponent.MoveByRigidbodyVelocity(direction);
+            _moveComponent.MoveByRigidbodyVelocity(direction);
         }
     }
 }

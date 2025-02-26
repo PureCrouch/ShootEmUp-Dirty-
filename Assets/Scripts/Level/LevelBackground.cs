@@ -13,7 +13,7 @@ namespace ShootEmUp
 
         private Transform _myTransform;
 
-        [SerializeField] private Params _params;
+        [SerializeField] private Params paramsSet;
 
         private void Awake()
         {
@@ -37,9 +37,9 @@ namespace ShootEmUp
 
         private void SetBackgroundParams()
         {
-            _startPositionY = _params.StartPositionY;
-            _endPositionY = _params.EndPositionY;
-            _movingSpeedY = _params.MovingSpeedY;
+            _startPositionY = paramsSet.StartPositionY;
+            _endPositionY = paramsSet.EndPositionY;
+            _movingSpeedY = paramsSet.MovingSpeedY;
             _myTransform = transform;
             var position = _myTransform.position;
             _positionX = position.x;

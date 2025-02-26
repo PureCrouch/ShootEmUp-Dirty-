@@ -10,25 +10,25 @@ using static ShootEmUp.EnemyAttackAgent;
 namespace ShootEmUp
 {
     [RequireComponent(typeof(HitPointsComponent), typeof(EnemyAttackAgent))]
-    public class Enemy : MonoBehaviour
+    public class Enemy : Unit
     {
         public event Action<Enemy> OnHpEmpty;
         public event FireHandler OnFire;
 
-        private HitPointsComponent _hpComponent;
-        private EnemyAttackAgent _enemyAttackAgent;
+        protected EnemyAttackAgent enemyAttackAgent;
 
         private void Awake()
         {
-            _hpComponent = GetComponent<HitPointsComponent>();
-            _enemyAttackAgent = GetComponent<EnemyAttackAgent>();
+            hitPointsComponent = GetComponent<HitPointsComponent>();
+            enemyAttackAgent = GetComponent<EnemyAttackAgent>();
 
-            _hpComponent.OnHpEmpty += HpComponentOnHpEmpty;
-            _enemyAttackAgent.OnFire += HandleFire; 
+            hitPointsComponent.OnHpEmpty += DoOnHpEmpty;
+            enemyAttackAgent.OnFire += HandleFire;
 
+            moveComponent = GetComponent<MoveComponent>();
         }
 
-        private void HpComponentOnHpEmpty(GameObject obj)
+        private void DoOnHpEmpty(GameObject obj)
         {
             if (obj.TryGetComponent<Enemy>(out var enemy))
             {

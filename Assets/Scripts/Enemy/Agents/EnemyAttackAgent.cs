@@ -8,15 +8,21 @@ namespace ShootEmUp
 
         public event FireHandler OnFire;
 
-        [SerializeField] private WeaponComponent weaponComponent;
+        private WeaponComponent _weaponComponent;
 
-        [SerializeField] private EnemyMoveAgent moveAgent;
+        private EnemyMoveAgent _moveAgent;
 
         [SerializeField] private float countdown;
 
         private GameObject _target;
         private float _currentTime;
 
+
+        private void Awake()
+        {
+            _weaponComponent = GetComponent<WeaponComponent>();
+            _moveAgent = GetComponent<EnemyMoveAgent>();
+        }
         public void SetTarget(GameObject target)
         {
             _target = target;
@@ -36,7 +42,7 @@ namespace ShootEmUp
 
         private void CheckEnemyMovement()
         {
-            if (!moveAgent.IsReached)
+            if (!_moveAgent.IsReached)
             {
                 return;
             }
@@ -62,7 +68,7 @@ namespace ShootEmUp
 
         private void SetFireOptions()
         {
-            var startPosition = weaponComponent.Position;
+            var startPosition = _weaponComponent.Position;
             var vector = (Vector2) _target.transform.position - startPosition;
             var direction = vector.normalized;
             OnFire?.Invoke(gameObject, startPosition, direction);

@@ -36,7 +36,7 @@ namespace ShootEmUp
                 return false; 
             }
 
-            dequeuedEnemy.transform.SetParent(this.worldTransform);
+            dequeuedEnemy.transform.SetParent(worldTransform);
 
             var spawnPosition = enemyPositions.RandomSpawnPosition();
             dequeuedEnemy.transform.position = spawnPosition.position;

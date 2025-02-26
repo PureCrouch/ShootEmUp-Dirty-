@@ -17,12 +17,12 @@ namespace ShootEmUp
 
         public void SetBulletArgs(BulletArgs bulletArgs)
         {
-            SetPosition(bulletArgs.position);
-            SetColor(bulletArgs.color);
-            SetPhysicsLayer(bulletArgs.physicsLayer);
-            SetVelocity(bulletArgs.velocity);
-            Damage = bulletArgs.damage;
-            IsPlayer = bulletArgs.isPlayer;
+            SetPosition(bulletArgs.Position);
+            SetColor(bulletArgs.Color);
+            SetPhysicsLayer(bulletArgs.PhysicsLayer);
+            SetVelocity(bulletArgs.Velocity);
+            Damage = bulletArgs.Damage;
+            IsPlayer = bulletArgs.IsPlayer;
         }
         
 

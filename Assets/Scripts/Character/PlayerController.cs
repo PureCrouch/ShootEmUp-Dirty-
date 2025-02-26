@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace ShootEmUp
 {
-    public sealed class PlayerController : Player, IFireable
+    public sealed class PlayerController : MonoBehaviour, IFireable
     {
-        [SerializeField] private GameObject character; 
+        public bool FireRequired;
 
         [SerializeField] private GameManager gameManager;
 
@@ -13,32 +13,28 @@ namespace ShootEmUp
 
         private IInputHandler _inputHandler;
 
-        public bool FireRequired;
-
+        private GameObject _character;
+        private MoveComponent _moveComponent;
+        private WeaponComponent _weaponComponent;
+        private HitPointsComponent _hitPointsComponent;
         private void Start()
         {
-            moveComponent = character.GetComponent<MoveComponent>();
-            weaponComponent = character.GetComponent<WeaponComponent>();
-            hitPointsComponent = character.GetComponent<HitPointsComponent>();
+            _character = FindObjectOfType<Player>().gameObject;
+
+            _moveComponent = _character.GetComponent<MoveComponent>();
+            _weaponComponent = _character.GetComponent<WeaponComponent>();
+            _hitPointsComponent = _character.GetComponent<HitPointsComponent>();
         }
         private void OnEnable()
         {
-            if (character == null) return;
-
-            if (character.TryGetComponent(out HitPointsComponent hitPointsComponent))
-            {
-                hitPointsComponent.OnHpEmpty += OnCharacterDeath;
-            }
+            if (_character == null) return;
+            _hitPointsComponent.OnHpEmpty += OnCharacterDeath;
         }
 
         private void OnDisable()
         {
-            if (character == null) return;
-
-            if (character.TryGetComponent(out HitPointsComponent hitPointsComponent))
-            { 
-                hitPointsComponent.OnHpEmpty -= OnCharacterDeath;
-            }
+            if (_character == null) return;
+            _hitPointsComponent.OnHpEmpty -= OnCharacterDeath;
         }
 
         private void OnCharacterDeath(GameObject _) => gameManager.FinishGame();
@@ -63,7 +59,7 @@ namespace ShootEmUp
         private void HandleMovePlayer(float horizontalDirection)
         {
             var movement = new Vector2(horizontalDirection, 0);
-            moveComponent.MoveByRigidbodyVelocity(movement * Time.fixedDeltaTime);
+            _moveComponent.MoveByRigidbodyVelocity(movement * Time.fixedDeltaTime);
         }
 
         private void HandleFireInput()
@@ -81,7 +77,7 @@ namespace ShootEmUp
         }
         private void OnFlyBullet()
         {
-            var weapon = weaponComponent;
+            var weapon = _weaponComponent;
             Fire(weapon.Position, weapon.Rotation * Vector3.up, bulletConfig);
         }
 
@@ -94,12 +90,12 @@ namespace ShootEmUp
         {
             bulletSystem.FlyBulletByArgs(new BulletArgs
             {
-                isPlayer = true,
-                physicsLayer = (int)bulletConfig.PhysicsLayer,
-                color = bulletConfig.Color,
-                damage = bulletConfig.Damage,
-                position = position,
-                velocity = direction * bulletConfig.Speed
+                IsPlayer = true,
+                PhysicsLayer = (int)bulletConfig.PhysicsLayer,
+                Color = bulletConfig.Color,
+                Damage = bulletConfig.Damage,
+                Position = position,
+                Velocity = direction * bulletConfig.Speed
             });
         }
     }
